@@ -6,6 +6,7 @@ __pycache__/
 # Virtual environment
 venv/
 .env/
+.venv/
 
 # Distribution / packaging
 build/
@@ -26,3 +27,10 @@ dist/
 
 # Other
 .idea/
+
+# Coverage data
+.coverage
+.coverage.*
+
+# Emacs directory settings
+.dir-locals.el
