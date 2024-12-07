@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import NamedTuple, Generic
+from typing import TypedDict, Generic
 from .protocols import VectorType, InternalStateProtocol
 
 
-class PerceptionAttributes(NamedTuple):
+class PerceptionAttributes(TypedDict):
     separation: float
     alignment: float
     cohesion: float

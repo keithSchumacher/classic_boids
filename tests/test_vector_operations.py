@@ -1,6 +1,5 @@
 import pytest
-from classic_boids.core.vector import Vector
-from classic_boids.core.perception import distance, angular_offset
+from classic_boids.core.vector import Vector, distance, angular_offset
 import numpy as np
 
 

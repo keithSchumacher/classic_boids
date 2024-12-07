@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from classic_boids.core.input_alphabet import InputAlphabet
 from classic_boids.core.internal_state import InternalState, PerceptionAttributes
-from classic_boids.core.perception import separation_perception
+from classic_boids.core.perception import perception
 from classic_boids.core.vector import Vector
 
 
@@ -117,22 +117,22 @@ def input_alphabet(narrow_fov_boid, full_fov_boid, normal_fov_boid, another_boid
 # Test for boid with very narrow field of view
 def test_narrow_fov(input_alphabet, narrow_fov_boid):
     # Expected to see no other boids due to very narrow FOV
-    assert separation_perception(input_alphabet, narrow_fov_boid) == []
+    assert perception(input_alphabet, narrow_fov_boid, "separation") == []
 
 
 # Test for boid with 360-degree field of view
 def test_full_fov(input_alphabet, full_fov_boid):
     # Expected to see all other boids except itself due to 360-degree FOV
-    assert separation_perception(input_alphabet, full_fov_boid) == [0, 2, 3]
+    assert perception(input_alphabet, full_fov_boid, "separation") == [0, 2, 3]
 
 
 # Test for boid with normal field of view
 def test_normal_fov(input_alphabet, normal_fov_boid):
     # Expected to see one boid within a normal FOV and separation distance
     # 2 birds are within the fov, but only one is within distance
-    assert separation_perception(input_alphabet, normal_fov_boid) == [1]
+    assert perception(input_alphabet, normal_fov_boid, "separation") == [1]
     # extend seperation perception distance to reveal both boids
     normal_fov_boid.perception_distance = PerceptionAttributes(
         cohesion=0.0, alignment=0.0, separation=6.0
     )
-    assert separation_perception(input_alphabet, normal_fov_boid) == [0, 1]
+    assert perception(input_alphabet, normal_fov_boid, "separation") == [0, 1]
