@@ -1,5 +1,5 @@
 import pytest
-from classic_boids.core.protocols import InternalStateProtocol
+from classic_boids.core.protocols import BoidID, InternalStateProtocol
 from classic_boids.core.internal_state import InternalState, PerceptionAttributes
 from classic_boids.core.vector import Vector
 import numpy as np
@@ -20,7 +20,7 @@ class TestInternalState:
         self.max_velocity = 10.0
         self.max_force = 5.0
         self.internal_state = InternalState(
-            id=1,
+            id=BoidID(1),
             position=self.position,
             velocity=self.velocity,
             perception_distance=self.perception_distance,
@@ -31,7 +31,7 @@ class TestInternalState:
         )
 
     def test_internal_state_initialization(self):
-        assert self.internal_state.id == 1
+        assert self.internal_state.id == BoidID(1)
         assert self.internal_state.position == self.position
         assert self.internal_state.velocity == self.velocity
         assert self.internal_state.perception_distance == self.perception_distance

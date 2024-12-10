@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from typing import TypedDict, Generic
+
+from classic_boids.core.protocols import BoidID
 from .protocols import VectorType, InternalStateProtocol
 
 
@@ -13,7 +15,7 @@ class PerceptionAttributes(TypedDict):
 class InternalState(
     Generic[VectorType], InternalStateProtocol[VectorType, PerceptionAttributes]
 ):
-    id: int
+    id: BoidID
     position: VectorType
     velocity: VectorType
     perception_distance: PerceptionAttributes

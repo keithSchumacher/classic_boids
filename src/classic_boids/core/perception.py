@@ -1,16 +1,19 @@
 from typing import Literal
+
+from classic_boids.core.protocols import Neighborhood
 from .protocols import (
     InternalStateProtocol,
     InputAlphabetProtocol,
 )
 from .vector import distance, angular_offset
+from .protocols import BoidID
 
 
 def perception(
     input_alphabet: InputAlphabetProtocol,
     internal_state: InternalStateProtocol,
     perception_type: Literal["separation", "alignment", "cohesion"],
-) -> list[int]:
+) -> Neighborhood:
     """
     Identifies entities within a specified distance and field of view.
 
@@ -29,7 +32,7 @@ def perception(
 
     # for idx, (position, velocity) in enumerate(zip(positions, velocities)):
     for idx, position in positions.items():
-        if idx == internal_state.id:
+        if BoidID(idx) == internal_state.id:
             continue
         if (
             distance(position_i=position, position_j=internal_state.position)
@@ -41,7 +44,7 @@ def perception(
             )
             < fov_angle
         ):
-            neighborhood.append(idx)
+            neighborhood.append(BoidID(idx))
 
     return neighborhood
 
