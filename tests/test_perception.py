@@ -2,9 +2,9 @@ import pytest
 import numpy as np
 from classic_boids.core.input_alphabet import InputAlphabet
 from classic_boids.core.internal_state import InternalState, PerceptionAttributes
-from classic_boids.core.perception import perception
+from classic_boids.core.perception import perception, Neighborhood
 from classic_boids.core.vector import Vector
-from classic_boids.core.protocols import BoidID, Neighborhood
+from classic_boids.core.protocols import BoidID
 
 
 @pytest.fixture(scope="session")
@@ -104,28 +104,55 @@ def input_alphabet(narrow_fov_boid, full_fov_boid, normal_fov_boid, another_boid
 # Test for boid with very narrow field of view
 def test_narrow_fov(input_alphabet, narrow_fov_boid):
     # Expected to see no other boids due to very narrow FOV
-    assert perception(input_alphabet, narrow_fov_boid, "separation") == []
+    expected_neighborhood = Neighborhood(ids=[], info={})
+    assert (
+        perception(input_alphabet, narrow_fov_boid, "separation")
+        == expected_neighborhood
+    )
 
 
 # Test for boid with 360-degree field of view
 def test_full_fov(input_alphabet, full_fov_boid):
     # Expected to see all other boids except itself due to 360-degree FOV
-    assert perception(input_alphabet, full_fov_boid, "separation") == Neighborhood(
-        [BoidID(0), BoidID(2), BoidID(3)]
+    expected_ids = [BoidID(0), BoidID(2), BoidID(3)]
+    expected_info = {
+        boid_id: (input_alphabet.positions[boid_id], input_alphabet.velocities[boid_id])
+        for boid_id in expected_ids
+    }
+
+    expected_neighborhood = Neighborhood(ids=expected_ids, info=expected_info)
+
+    assert (
+        perception(input_alphabet, full_fov_boid, "separation") == expected_neighborhood
     )
 
 
 # Test for boid with normal field of view
 def test_normal_fov(input_alphabet, normal_fov_boid):
-    # Expected to see one boid within a normal FOV and separation distance
-    # 2 birds are within the fov, but only one is within distance
-    assert perception(input_alphabet, normal_fov_boid, "separation") == Neighborhood(
-        [BoidID(1)]
+    # Initially, normal_fov_boid can only see boid 1 within both distance and FOV.
+    expected_ids = [BoidID(1)]
+    expected_info = {
+        boid_id: (input_alphabet.positions[boid_id], input_alphabet.velocities[boid_id])
+        for boid_id in expected_ids
+    }
+    expected_neighborhood = Neighborhood(ids=expected_ids, info=expected_info)
+    assert (
+        perception(input_alphabet, normal_fov_boid, "separation")
+        == expected_neighborhood
     )
-    # extend seperation perception distance to reveal both boids
+
+    # Now extend the separation distance so it can also see boid 0.
     normal_fov_boid.perception_distance = PerceptionAttributes(
         cohesion=0.0, alignment=0.0, separation=6.0
     )
-    assert perception(input_alphabet, normal_fov_boid, "separation") == Neighborhood(
-        [BoidID(0), BoidID(1)]
+
+    expected_ids = [BoidID(0), BoidID(1)]
+    expected_info = {
+        boid_id: (input_alphabet.positions[boid_id], input_alphabet.velocities[boid_id])
+        for boid_id in expected_ids
+    }
+    expected_neighborhood = Neighborhood(ids=expected_ids, info=expected_info)
+    assert (
+        perception(input_alphabet, normal_fov_boid, "separation")
+        == expected_neighborhood
     )
