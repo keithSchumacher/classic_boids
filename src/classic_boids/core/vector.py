@@ -58,3 +58,15 @@ def angular_offset(
         raise ZeroDivisionError("Denominator cannot be zero.")
 
     return np.arccos(numerator / denominator)
+
+
+def normalize(vector: VectorType) -> VectorType:
+    """
+    Returns a normalized version of the input vector.
+
+    Assumes vector is not the zero vector. If it is zero-length,
+    this function may throw a ZeroDivisionError or produce NaNs.
+    """
+    if (norm := vector.norm()) == 0:
+        raise ValueError("Cannot normalize the zero vector.")
+    return vector * (1.0 / norm)

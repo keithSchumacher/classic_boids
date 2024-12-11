@@ -1,5 +1,5 @@
 import pytest
-from classic_boids.core.vector import Vector, distance, angular_offset
+from classic_boids.core.vector import Vector, distance, angular_offset, normalize
 import numpy as np
 
 
@@ -68,3 +68,48 @@ def test_zero_distance_angular_offset():
     pos_i = Vector(np.array([1, 0]))
     vel_i = Vector(np.array([-1, 0]))
     assert pytest.approx(angular_offset(pos_i, pos_i, vel_i)) == 0
+
+
+def test_normalization_basic():
+    vec = Vector(np.array([3.0, 4.0]))  # Length should be 5.0
+    norm_vec = normalize(vec)
+    assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
+    # Check direction: should be proportional to original
+    assert np.allclose(
+        norm_vec, vec * (1 / 5.0)
+    ), "Normalized vector should be the original divided by its norm."
+
+
+def test_normalization_already_normalized():
+    vec = Vector(np.array([1 / np.sqrt(2), 1 / np.sqrt(2)]))
+    norm_vec = normalize(vec)
+    assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should remain length 1."
+    assert np.allclose(
+        norm_vec, vec
+    ), "An already normalized vector should remain unchanged."
+
+
+def test_normalization_zero_vector():
+    vec = Vector(np.array([0.0, 0.0]))
+    with pytest.raises(ValueError, match="Cannot normalize the zero vector."):
+        normalize(vec)
+
+
+def test_normalization_negative_components():
+    vec = Vector(np.array([-2.0, 0.0, 2.0]))
+    norm_vec = normalize(vec)
+    length = np.sqrt((-2.0) ** 2 + 2.0**2)  # sqrt(4+4)=sqrt(8)
+    assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
+    assert np.allclose(
+        norm_vec, vec * (1.0 / length)
+    ), "Normalized vector should be the original divided by its norm."
+
+
+def test_normalization_high_dimensional():
+    vec = Vector(np.array([1.0, 2.0, 3.0, 4.0]))
+    norm_vec = normalize(vec)
+    length = vec.norm()
+    assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
+    assert np.allclose(
+        norm_vec, vec * (1.0 / length)
+    ), "Normalized vector should be the original divided by its norm."

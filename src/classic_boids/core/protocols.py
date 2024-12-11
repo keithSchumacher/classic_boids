@@ -36,7 +36,6 @@ class VectorProtocol(Protocol):
 VectorType = TypeVar("VectorType", bound=VectorProtocol)
 PerceptionAttributeType = TypeVar("PerceptionAttributeType")
 BoidID = NewType("BoidID", int)
-Neighborhood = NewType("Neighborhood", list[BoidID])
 
 
 class InputAlphabetProtocol(Protocol, Generic[VectorType]):
@@ -69,13 +68,8 @@ class InternalStateProtocol(Protocol, Generic[VectorType, PerceptionAttributeTyp
 
 
 class NeighborhoodProtocol(Protocol):
-    @property
-    def ids(self) -> list[BoidID]:
-        ...
-
-    @property
-    def info(self) -> dict[BoidID, tuple[VectorType, VectorType]]:
-        ...
+    ids: list[BoidID]
+    info: dict[BoidID, tuple[VectorType, VectorType]]
 
 
 class PerceptionFunctionProtocol(Protocol):
@@ -90,7 +84,7 @@ class PerceptionFunctionProtocol(Protocol):
 class DriveFunctionProtocol(Protocol):
     def __call__(
         self,
-        neighborhood: Neighborhood,
+        neighborhood: NeighborhoodProtocol,
         internal_state: InternalStateProtocol,
     ) -> float:
         ...
