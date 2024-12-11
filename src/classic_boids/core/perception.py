@@ -2,12 +2,18 @@ from typing import Literal
 from dataclasses import dataclass
 
 # from classic_boids.core.protocols import Neighborhood
-from .protocols import InternalStateProtocol, InputAlphabetProtocol, BoidID, VectorType
+from .protocols import (
+    InternalStateProtocol,
+    InputAlphabetProtocol,
+    BoidID,
+    NeighborhoodProtocol,
+    VectorType,
+)
 from .vector import distance, angular_offset
 
 
 @dataclass
-class Neighborhood:
+class Neighborhood(NeighborhoodProtocol):
     ids: list[BoidID]
     info: dict[BoidID, tuple[VectorType, VectorType]]
 

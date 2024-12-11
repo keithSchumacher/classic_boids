@@ -1,4 +1,11 @@
-from typing import NewType, Protocol, Generic, Self, TypeVar, runtime_checkable
+from typing import (
+    NewType,
+    Protocol,
+    Generic,
+    Self,
+    TypeVar,
+    runtime_checkable,
+)
 
 
 # TODO make sure methods are compatible with OpenUSD Vec3D
@@ -61,12 +68,22 @@ class InternalStateProtocol(Protocol, Generic[VectorType, PerceptionAttributeTyp
     max_achievable_force: float
 
 
+class NeighborhoodProtocol(Protocol):
+    @property
+    def ids(self) -> list[BoidID]:
+        ...
+
+    @property
+    def info(self) -> dict[BoidID, tuple[VectorType, VectorType]]:
+        ...
+
+
 class PerceptionFunctionProtocol(Protocol):
     def __call__(
         self,
         input_alphabet: InputAlphabetProtocol,
         internal_state: InternalStateProtocol,
-    ) -> Neighborhood:
+    ) -> NeighborhoodProtocol:
         ...
 
 
