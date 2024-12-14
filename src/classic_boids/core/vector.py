@@ -24,6 +24,11 @@ class Vector(VectorProtocol):
     def __mul__(self, scalar: float) -> "Vector":
         return Vector(self.data * scalar)
 
+    def __truediv__(self, scalar: float) -> "Vector":
+        if scalar == 0.0:
+            raise ZeroDivisionError("Cannot divide vector by zero.")
+        return Vector(self.data / scalar)
+
     def __len__(self) -> int:
         return len(self.data)
 
@@ -69,4 +74,4 @@ def normalize(vector: VectorType) -> VectorType:
     """
     if (norm := vector.norm()) == 0:
         raise ValueError("Cannot normalize the zero vector.")
-    return vector * (1.0 / norm)
+    return vector / norm

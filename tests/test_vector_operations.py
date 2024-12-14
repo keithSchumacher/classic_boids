@@ -76,7 +76,7 @@ def test_normalization_basic():
     assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
     # Check direction: should be proportional to original
     assert np.allclose(
-        norm_vec, vec * (1 / 5.0)
+        norm_vec, vec / 5.0
     ), "Normalized vector should be the original divided by its norm."
 
 
@@ -101,7 +101,7 @@ def test_normalization_negative_components():
     length = np.sqrt((-2.0) ** 2 + 2.0**2)  # sqrt(4+4)=sqrt(8)
     assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
     assert np.allclose(
-        norm_vec, vec * (1.0 / length)
+        norm_vec, vec / length
     ), "Normalized vector should be the original divided by its norm."
 
 
@@ -111,5 +111,5 @@ def test_normalization_high_dimensional():
     length = vec.norm()
     assert np.isclose(norm_vec.norm(), 1.0), "Normalized vector should have length 1."
     assert np.allclose(
-        norm_vec, vec * (1.0 / length)
+        norm_vec, vec / length
     ), "Normalized vector should be the original divided by its norm."

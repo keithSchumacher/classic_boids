@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from classic_boids.core.vector import Vector
 
 
@@ -44,6 +45,28 @@ def test_scalar_multiplication():
     result = v * scalar
     expected = Vector(np.array([2.5, 5.0]))
     assert np.array_equal(result.data, expected.data), "Scalar multiplication failed"
+
+
+def test_vector_division():
+    v = Vector(np.array([2.0, 4.0]))
+
+    # Test division by a non-zero scalar
+    result = v / 2.0
+    expected = Vector(np.array([1.0, 2.0]))
+    assert np.allclose(
+        result.data, expected.data
+    ), f"Expected {expected.data} but got {result.data}"
+
+    # Test division by a positive non-zero scalar
+    result = v / 0.5
+    expected = Vector(np.array([4.0, 8.0]))
+    assert np.allclose(
+        result.data, expected.data
+    ), f"Expected {expected.data} but got {result.data}"
+
+    # Test division by zero
+    with pytest.raises(ZeroDivisionError, match="Cannot divide vector by zero."):
+        _ = v / 0.0
 
 
 def test_vector_item_access():

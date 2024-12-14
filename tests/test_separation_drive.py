@@ -4,11 +4,7 @@ from classic_boids.core.perception import Neighborhood
 from classic_boids.core.vector import Vector
 from classic_boids.core.protocols import BoidID
 from classic_boids.core.drive import separation_drive
-
-
-# A helper function to compare two vectors for equality.
-def vectors_close(v1: Vector, v2: Vector, atol=1e-7) -> bool:
-    return np.allclose(v1.data, v2.data, atol=atol)
+from tests.test_utilities import vectors_close
 
 
 def test_separation_drive_no_neighbors():
