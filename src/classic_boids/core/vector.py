@@ -46,9 +46,7 @@ def distance(position_i: VectorType, position_j: VectorType) -> float:
     return (position_i - position_j).norm()
 
 
-def angular_offset(
-    position_i: VectorType, position_j: VectorType, velocity_j: VectorType
-) -> float:
+def angular_offset(position_i: VectorType, position_j: VectorType, velocity_j: VectorType) -> float:
     """Angular offset of Boid B_j from Boid B_i"""
     difference = position_i - position_j
     numerator = velocity_j.dot(difference)
@@ -75,3 +73,24 @@ def normalize(vector: VectorType) -> VectorType:
     if (norm := vector.norm()) == 0:
         raise ValueError("Cannot normalize the zero vector.")
     return vector / norm
+
+
+def truncate(vector: VectorType, maximal_size: float) -> VectorType:
+    """
+    Truncate a vector so that its norm does not exceed a given maximum size.
+
+    If the vector's norm (magnitude) is greater than `maximal_size`, the vector
+    is scaled down proportionally so that its new norm equals `maximal_size`.
+    If the vector's norm is less than or equal to `maximal_size`, it is returned
+    unchanged. If `maximal_size` is zero or a positive number and the vector is zero-length,
+    the vector is returned unchanged.
+
+    Raises:
+        ValueError: If `maximal_size` is negative.
+    """
+    if maximal_size < 0:
+        raise ValueError("maximal_size must be non-negative.")
+    norm = vector.norm()
+    if norm <= maximal_size:
+        return vector
+    return normalize(vector) * maximal_size
