@@ -1,11 +1,9 @@
 import numpy as np
-from classic_boids.core.internal_state import InternalState
-from .protocols import VectorType
+from .protocols import DriveFunctionProtocol, DriveName, InternalStateProtocol, NeighborhoodProtocol, VectorType
 from .vector import Vector, normalize
-from .perception import Neighborhood
 
 
-def separation_drive(neighborhood: Neighborhood, internal_state: InternalState) -> VectorType:
+def separation_drive(neighborhood: NeighborhoodProtocol, internal_state: InternalStateProtocol) -> VectorType:
     position = internal_state.position
     summation = Vector(np.zeros_like(position.data))
 
@@ -30,7 +28,7 @@ def separation_drive(neighborhood: Neighborhood, internal_state: InternalState) 
     return normalize(summation)
 
 
-def alignment_drive(neighborhood: Neighborhood, internal_state: InternalState) -> VectorType:
+def alignment_drive(neighborhood: NeighborhoodProtocol, internal_state: InternalStateProtocol) -> VectorType:
     """Compute the alignment drive for a boid based on its neighbors' velocities.
 
     If the boid has no neighbors, the alignment drive is zero.
@@ -55,7 +53,7 @@ def alignment_drive(neighborhood: Neighborhood, internal_state: InternalState) -
     return normalize(average_velocity - velocity)
 
 
-def cohesion_drive(neighborhood: Neighborhood, internal_state: InternalState) -> VectorType:
+def cohesion_drive(neighborhood: NeighborhoodProtocol, internal_state: InternalStateProtocol) -> VectorType:
     """Compute the cohesion drive for a boid based on its neighbors' positions.
 
     If the boid has no neighbors, the cohesion drive is zero.
@@ -78,3 +76,19 @@ def cohesion_drive(neighborhood: Neighborhood, internal_state: InternalState) ->
 
     # Return the normalized vector pointing from the current position toward the average position
     return normalize(average_position - position)
+
+
+def compute_drives(
+    drive_functions: dict[DriveName, DriveFunctionProtocol],
+    neighborhood: NeighborhoodProtocol,
+    internal_state: InternalStateProtocol,
+) -> dict[DriveName, float]:
+    """Compute the actions by calling each drive function and return them in a dictionary."""
+    a_s = drive_functions[DriveName.SEPARATION](neighborhood, internal_state)
+    a_a = drive_functions[DriveName.ALIGNMENT](neighborhood, internal_state)
+    a_c = drive_functions[DriveName.COHESION](neighborhood, internal_state)
+    return {
+        DriveName.SEPARATION: a_s,
+        DriveName.ALIGNMENT: a_a,
+        DriveName.COHESION: a_c,
+    }

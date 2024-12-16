@@ -1,25 +1,18 @@
 from dataclasses import dataclass
-from typing import TypedDict, Generic
+from typing import Generic
 
 from classic_boids.core.protocols import BoidID
-from .protocols import VectorType, InternalStateProtocol
-
-
-class PerceptionAttributes(TypedDict):
-    separation: float
-    alignment: float
-    cohesion: float
+from .protocols import DriveName, VectorType, InternalStateProtocol
 
 
 @dataclass
-class InternalState(
-    Generic[VectorType], InternalStateProtocol[VectorType, PerceptionAttributes]
-):
+class InternalState(Generic[VectorType], InternalStateProtocol[VectorType, dict[DriveName, float]]):
     id: BoidID
     position: VectorType
     velocity: VectorType
-    perception_distance: PerceptionAttributes
-    perception_field_of_view: PerceptionAttributes
+    perception_distance: dict[DriveName, float]
+    perception_field_of_view: dict[DriveName, float]
     mass: float
     max_achievable_velocity: float
     max_achievable_force: float
+    action_weights: dict[DriveName, float]

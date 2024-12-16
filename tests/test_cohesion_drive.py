@@ -3,7 +3,7 @@ import pytest
 from classic_boids.core.internal_state import InternalState
 from classic_boids.core.perception import Neighborhood
 from classic_boids.core.vector import Vector
-from classic_boids.core.protocols import BoidID
+from classic_boids.core.protocols import BoidID, DriveName
 from classic_boids.core.drive import cohesion_drive
 from tests.test_utilities import vectors_close
 
@@ -13,18 +13,21 @@ def base_internal_state() -> InternalState:
     return InternalState(
         id=BoidID(0),
         position=Vector(np.array([0.0, 0.0])),
-        velocity=Vector(
-            np.array([1.0, 0.0])
-        ),  # velocity isn't used by cohesion directly
-        perception_distance={"cohesion": 0.0, "alignment": 0.0, "separation": 5.0},
+        velocity=Vector(np.array([1.0, 0.0])),  # velocity isn't used by cohesion directly
+        perception_distance={DriveName.COHESION: 0.0, DriveName.ALIGNMENT: 0.0, DriveName.SEPARATION: 5.0},
         perception_field_of_view={
-            "cohesion": 0.0,
-            "alignment": 0.0,
-            "separation": 2 * np.pi,
+            DriveName.COHESION: 0.0,
+            DriveName.ALIGNMENT: 0.0,
+            DriveName.SEPARATION: 2 * np.pi,
         },
         mass=1.0,
         max_achievable_velocity=10.0,
         max_achievable_force=5.0,
+        action_weights={
+            DriveName.COHESION: 1.0 / 3,
+            DriveName.ALIGNMENT: 1.0 / 3,
+            DriveName.SEPARATION: 1.0 / 3,
+        },
     )
 
 
@@ -43,15 +46,11 @@ def test_cohesion_drive_single_neighbor(base_internal_state):
     # normalized = (2,2)/| (2,2)| = (2,2)/sqrt(8)= (0.707...,0.707...)
 
     neighbor_pos = Vector(np.array([2.0, 2.0]))
-    neighborhood = Neighborhood(
-        ids=[BoidID(1)], info={BoidID(1): (neighbor_pos, Vector(np.array([0.0, 0.0])))}
-    )
+    neighborhood = Neighborhood(ids=[BoidID(1)], info={BoidID(1): (neighbor_pos, Vector(np.array([0.0, 0.0])))})
 
     result = cohesion_drive(neighborhood, base_internal_state)
     expected_direction = Vector(np.array([2.0, 2.0])) / np.sqrt(8)
-    assert vectors_close(
-        result, Vector(expected_direction)
-    ), f"Expected {expected_direction} but got {result.data}"
+    assert vectors_close(result, Vector(expected_direction)), f"Expected {expected_direction} but got {result.data}"
 
 
 def test_cohesion_drive_multiple_neighbors_same_position(base_internal_state):
@@ -71,9 +70,7 @@ def test_cohesion_drive_multiple_neighbors_same_position(base_internal_state):
 
     result = cohesion_drive(neighborhood, base_internal_state)
     expected_direction = Vector(np.array([3.0, 3.0])) / np.sqrt(18)
-    assert vectors_close(
-        result, Vector(expected_direction)
-    ), f"Expected {expected_direction} but got {result.data}"
+    assert vectors_close(result, Vector(expected_direction)), f"Expected {expected_direction} but got {result.data}"
 
 
 def test_cohesion_drive_multiple_neighbors_diverse_positions(base_internal_state):
@@ -99,6 +96,4 @@ def test_cohesion_drive_multiple_neighbors_diverse_positions(base_internal_state
     avg = Vector(np.array([4.0, 4.0])) / 3.0  # (1.3333,1.3333)
     norm_val = avg.norm()
     expected_direction = avg / norm_val
-    assert vectors_close(
-        result, Vector(expected_direction)
-    ), f"Expected {expected_direction} but got {result.data}"
+    assert vectors_close(result, Vector(expected_direction)), f"Expected {expected_direction} but got {result.data}"

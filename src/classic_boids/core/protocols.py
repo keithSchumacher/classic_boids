@@ -6,6 +6,7 @@ from typing import (
     TypeVar,
     runtime_checkable,
 )
+from enum import Enum
 
 
 # TODO make sure methods are compatible with OpenUSD Vec3D
@@ -65,6 +66,7 @@ class InternalStateProtocol(Protocol, Generic[VectorType, PerceptionAttributeTyp
     mass: float
     max_achievable_velocity: float
     max_achievable_force: float
+    action_weights: PerceptionAttributeType
 
 
 class NeighborhoodProtocol(Protocol):
@@ -87,4 +89,21 @@ class DriveFunctionProtocol(Protocol):
         neighborhood: NeighborhoodProtocol,
         internal_state: InternalStateProtocol,
     ) -> float:
+        ...
+
+
+# Enum to identify each drive action
+class DriveName(Enum):
+    SEPARATION = "separation"
+    ALIGNMENT = "alignment"
+    COHESION = "cohesion"
+
+
+class ComputeDrivesProtocol(Protocol):
+    def __call__(
+        self,
+        drive_functions: dict[DriveName, DriveFunctionProtocol],
+        neighborhood: NeighborhoodProtocol,
+        internal_state: InternalStateProtocol,
+    ) -> dict[DriveName, float]:
         ...

@@ -2,7 +2,7 @@ import numpy as np
 from classic_boids.core.internal_state import InternalState
 from classic_boids.core.perception import Neighborhood
 from classic_boids.core.vector import Vector
-from classic_boids.core.protocols import BoidID
+from classic_boids.core.protocols import BoidID, DriveName
 from classic_boids.core.drive import separation_drive
 from tests.test_utilities import vectors_close
 
@@ -13,24 +13,27 @@ def test_separation_drive_no_neighbors():
         id=BoidID(0),
         position=Vector(np.array([0.0, 0.0])),
         velocity=Vector(np.array([1.0, 0.0])),
-        perception_distance={"cohesion": 0.0, "alignment": 0.0, "separation": 5.0},
+        perception_distance={DriveName.COHESION: 0.0, DriveName.ALIGNMENT: 0.0, DriveName.SEPARATION: 5.0},
         perception_field_of_view={
-            "cohesion": 0.0,
-            "alignment": 0.0,
-            "separation": np.pi,
+            DriveName.COHESION: 0.0,
+            DriveName.ALIGNMENT: 0.0,
+            DriveName.SEPARATION: np.pi,
         },
         mass=1.0,
         max_achievable_velocity=10.0,
         max_achievable_force=5.0,
+        action_weights={
+            DriveName.COHESION: 1.0 / 3,
+            DriveName.ALIGNMENT: 1.0 / 3,
+            DriveName.SEPARATION: 1.0 / 3,
+        },
     )
 
     neighborhood = Neighborhood(ids=[], info={})
 
     result = separation_drive(neighborhood, internal_state)
     # If normalize raises on zero vectors, this may fail. If it returns zero vector, check that:
-    assert vectors_close(
-        result, Vector(np.array([0.0, 0.0]))
-    ), "With no neighbors, separation drive should be zero."
+    assert vectors_close(result, Vector(np.array([0.0, 0.0]))), "With no neighbors, separation drive should be zero."
 
 
 def test_separation_drive_single_neighbor():
@@ -45,15 +48,20 @@ def test_separation_drive_single_neighbor():
         id=BoidID(0),
         position=Vector(np.array([0.0, 0.0])),
         velocity=Vector(np.array([1.0, 0.0])),
-        perception_distance={"cohesion": 0.0, "alignment": 0.0, "separation": 5.0},
+        perception_distance={DriveName.COHESION: 0.0, DriveName.ALIGNMENT: 0.0, DriveName.SEPARATION: 5.0},
         perception_field_of_view={
-            "cohesion": 0.0,
-            "alignment": 0.0,
-            "separation": 2 * np.pi,
+            DriveName.COHESION: 0.0,
+            DriveName.ALIGNMENT: 0.0,
+            DriveName.SEPARATION: 2 * np.pi,
         },
         mass=1.0,
         max_achievable_velocity=10.0,
         max_achievable_force=5.0,
+        action_weights={
+            DriveName.COHESION: 1.0 / 3,
+            DriveName.ALIGNMENT: 1.0 / 3,
+            DriveName.SEPARATION: 1.0 / 3,
+        },
     )
 
     neighborhood = Neighborhood(
@@ -63,9 +71,7 @@ def test_separation_drive_single_neighbor():
 
     result = separation_drive(neighborhood, internal_state)
     expected_direction = np.array([-1.0, -1.0]) / np.sqrt(2)  # normalized direction
-    assert vectors_close(
-        result, Vector(expected_direction)
-    ), f"Expected {expected_direction} but got {result.data}"
+    assert vectors_close(result, Vector(expected_direction)), f"Expected {expected_direction} but got {result.data}"
 
 
 def test_separation_drive_symmetric_neighbors():
@@ -81,15 +87,20 @@ def test_separation_drive_symmetric_neighbors():
         id=BoidID(0),
         position=Vector(np.array([0.0, 0.0])),
         velocity=Vector(np.array([1.0, 0.0])),
-        perception_distance={"cohesion": 0.0, "alignment": 0.0, "separation": 5.0},
+        perception_distance={DriveName.COHESION: 0.0, DriveName.ALIGNMENT: 0.0, DriveName.SEPARATION: 5.0},
         perception_field_of_view={
-            "cohesion": 0.0,
-            "alignment": 0.0,
-            "separation": 2 * np.pi,
+            DriveName.COHESION: 0.0,
+            DriveName.ALIGNMENT: 0.0,
+            DriveName.SEPARATION: 2 * np.pi,
         },
         mass=1.0,
         max_achievable_velocity=10.0,
         max_achievable_force=5.0,
+        action_weights={
+            DriveName.COHESION: 1.0 / 3,
+            DriveName.ALIGNMENT: 1.0 / 3,
+            DriveName.SEPARATION: 1.0 / 3,
+        },
     )
 
     neighborhood = Neighborhood(
@@ -102,9 +113,7 @@ def test_separation_drive_symmetric_neighbors():
 
     result = separation_drive(neighborhood, internal_state)
     # Expect zero vector again
-    assert vectors_close(
-        result, Vector(np.array([0.0, 0.0]))
-    ), "Symmetric neighbors should cancel out."
+    assert vectors_close(result, Vector(np.array([0.0, 0.0]))), "Symmetric neighbors should cancel out."
 
 
 def test_separation_drive_asymmetric_neighbors():
@@ -122,15 +131,20 @@ def test_separation_drive_asymmetric_neighbors():
         id=BoidID(0),
         position=Vector(np.array([0.0, 0.0])),
         velocity=Vector(np.array([1.0, 0.0])),
-        perception_distance={"cohesion": 0.0, "alignment": 0.0, "separation": 5.0},
+        perception_distance={DriveName.COHESION: 0.0, DriveName.ALIGNMENT: 0.0, DriveName.SEPARATION: 5.0},
         perception_field_of_view={
-            "cohesion": 0.0,
-            "alignment": 0.0,
-            "separation": 2 * np.pi,
+            DriveName.COHESION: 0.0,
+            DriveName.ALIGNMENT: 0.0,
+            DriveName.SEPARATION: 2 * np.pi,
         },
         mass=1.0,
         max_achievable_velocity=10.0,
         max_achievable_force=5.0,
+        action_weights={
+            DriveName.COHESION: 1.0 / 3,
+            DriveName.ALIGNMENT: 1.0 / 3,
+            DriveName.SEPARATION: 1.0 / 3,
+        },
     )
 
     neighborhood = Neighborhood(
@@ -146,6 +160,4 @@ def test_separation_drive_asymmetric_neighbors():
     norm = np.linalg.norm(expected)
     expected_normalized = expected / norm
 
-    assert vectors_close(
-        result, Vector(expected_normalized)
-    ), f"Expected {expected_normalized} but got {result.data}"
+    assert vectors_close(result, Vector(expected_normalized)), f"Expected {expected_normalized} but got {result.data}"

@@ -1,8 +1,7 @@
-from typing import Literal
 from dataclasses import dataclass
 
-# from classic_boids.core.protocols import Neighborhood
 from .protocols import (
+    DriveName,
     InternalStateProtocol,
     InputAlphabetProtocol,
     BoidID,
@@ -21,7 +20,7 @@ class Neighborhood(NeighborhoodProtocol):
 def perception(
     input_alphabet: InputAlphabetProtocol,
     internal_state: InternalStateProtocol,
-    perception_type: Literal["separation", "alignment", "cohesion"],
+    perception_type: DriveName,
 ) -> Neighborhood:
     """
     Identifies entities within a specified distance and field of view, returning a Neighborhood instance.
@@ -58,10 +57,7 @@ def perception(
             neighborhood_ids.append(BoidID(idx))
 
     # Build the info dictionary
-    neighborhood_info = {
-        boid_id: (positions[int(boid_id)], velocities[int(boid_id)])
-        for boid_id in neighborhood_ids
-    }
+    neighborhood_info = {boid_id: (positions[int(boid_id)], velocities[int(boid_id)]) for boid_id in neighborhood_ids}
 
     return Neighborhood(ids=neighborhood_ids, info=neighborhood_info)
 
