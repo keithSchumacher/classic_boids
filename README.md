@@ -1,13 +1,4 @@
-For development, navigate to root directory, activate virtual environment and run:
-pip install -e .
-
-Useful info for pytest:
-https://github.com/wbolster/emacs-python-pytest?tab=readme-ov-file
-coverage run -m pytest tests/
-coverage report
-
-
-
+For development, navigate to root directory, activate virtual environment and run: pip install -e .  Useful info for pytest: https://github.com/wbolster/emacs-python-pytest?tab=readme-ov-file coverage run -m pytest tests/ coverage report
 ## Equations
 
 [Truncate](./src/classic_boids/core/vector.py#L78) vector $\mathbf{v}$ by maximal size $v$:
@@ -23,12 +14,11 @@ $$
 
 
 [Action Selection Protocol](./src/classic_boids/core/protocols.py#L112) defines:
-
 $$
 S_{ws}: A \times Q \to Q
 $$
 
-Given a tuple of actions $ a \in A^3 $ and an internal state $ q \in Q $, the [Action Selection Function](./src/classic_boids/core/action_selection.py#L6) produces a new internal state:
+Given a tuple of actions $a \in A^3$ and an internal state $q \in Q$, the [Action Selection Function](./src/classic_boids/core/action_selection.py#L6) produces a new internal state
 
 $$
 S_{ws}(a, q) = \langle p', v', \ldots \rangle
