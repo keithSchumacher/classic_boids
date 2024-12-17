@@ -88,7 +88,7 @@ class DriveFunctionProtocol(Protocol):
         self,
         neighborhood: NeighborhoodProtocol,
         internal_state: InternalStateProtocol,
-    ) -> float:
+    ) -> VectorType:
         ...
 
 
@@ -105,5 +105,12 @@ class ComputeDrivesProtocol(Protocol):
         drive_functions: dict[DriveName, DriveFunctionProtocol],
         neighborhood: NeighborhoodProtocol,
         internal_state: InternalStateProtocol,
-    ) -> dict[DriveName, float]:
+    ) -> dict[DriveName, VectorType]:
+        ...
+
+
+class ActionSelectionFunctionProtocol(Protocol):
+    def __call__(
+        self, actions: dict[DriveName, VectorType], internal_state: InternalStateProtocol
+    ) -> InternalStateProtocol:
         ...

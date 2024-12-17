@@ -15,4 +15,4 @@ class InternalState(Generic[VectorType], InternalStateProtocol[VectorType, dict[
     mass: float
     max_achievable_velocity: float
     max_achievable_force: float
-    action_weights: dict[DriveName, float]
+    action_weights: dict[DriveName, VectorType]

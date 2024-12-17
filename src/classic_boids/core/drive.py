@@ -82,7 +82,7 @@ def compute_drives(
     drive_functions: dict[DriveName, DriveFunctionProtocol],
     neighborhood: NeighborhoodProtocol,
     internal_state: InternalStateProtocol,
-) -> dict[DriveName, float]:
+) -> dict[DriveName, VectorType]:
     """Compute the actions by calling each drive function and return them in a dictionary."""
     a_s = drive_functions[DriveName.SEPARATION](neighborhood, internal_state)
     a_a = drive_functions[DriveName.ALIGNMENT](neighborhood, internal_state)
