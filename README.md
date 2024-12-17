@@ -13,10 +13,7 @@ $$
 
 
 
-[Action Selection Protocol](./src/classic_boids/core/protocols.py#L112) defines:
-$$
-S_{ws}: A \times Q \to Q
-$$
+[Action Selection Protocol](./src/classic_boids/core/protocols.py#L112) defines $S_{ws}: A \times Q \to Q$
 
 Given a tuple of actions $a \in A^3$ and an internal state $q \in Q$, the [Action Selection Function](./src/classic_boids/core/action_selection.py#L6) produces a new internal state
 
