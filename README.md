@@ -8,7 +8,8 @@ Let $V = \mathbb{R}^d, (d = 2,3)$ be a Euclidean [vector](./src/classic_boids/co
 
 A boid's [Internal State](./src/classic_boids/core/protocols.py#L60) $q \in Q$ is:
 
-$$ Q = \{q \mid q = \langle p, v, r, fov, m, v_m, f_m, w \rangle \}$$
+$$ Q = \{q \mid q = \langle p, v, r, fov, m, v_m, f_m, w \rangle \} $$
+
 where $p \in V$ is position, $v \in V$ is velocity, $r = \langle r_s, r_a, r_c \rangle$ are perception distances, $fov = \langle fov_s, fov_a, fov_c \rangle$ are fields of view, $m$ is mass, $v_m$ is maximal speed, $f_m$ is maximal force, and $w = \langle w_s, w_a, w_c \rangle$ are action weights.
 
 A boid's output alphabet $Y = V \times V$ is its position and velocity. The [input alphabet](./src/classic_boids/core/input_alphabet.py) of a boid is the current state of all boids in the system, $X = Y^n$ for an $n$-boid system.
