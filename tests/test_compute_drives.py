@@ -18,11 +18,16 @@ def test_compute_drives():
     }
 
     # Mock neighborhood and internal_state
-    neighborhood = Mock(spec=NeighborhoodProtocol)
+    neighborhood_mock = Mock(spec=NeighborhoodProtocol)
+    neighborhoods = {
+        DriveName.SEPARATION: neighborhood_mock,
+        DriveName.ALIGNMENT: neighborhood_mock,
+        DriveName.COHESION: neighborhood_mock,
+    }
     internal_state = Mock(spec=InternalStateProtocol)
 
     # Act: Call the function under test
-    result = compute_drives(drive_functions, neighborhood, internal_state)
+    result = compute_drives(drive_functions, neighborhoods, internal_state)
 
     # Assert: Check that the results are as expected
     assert result[DriveName.SEPARATION] == Vector(np.array([1.0, 1.0]))
@@ -30,6 +35,6 @@ def test_compute_drives():
     assert result[DriveName.COHESION] == Vector(np.array([3.0, 3.0]))
 
     # Ensure each drive function was called with the expected arguments
-    separation_mock.assert_called_once_with(neighborhood, internal_state)
-    alignment_mock.assert_called_once_with(neighborhood, internal_state)
-    cohesion_mock.assert_called_once_with(neighborhood, internal_state)
+    separation_mock.assert_called_once_with(neighborhoods[DriveName.SEPARATION], internal_state)
+    alignment_mock.assert_called_once_with(neighborhoods[DriveName.ALIGNMENT], internal_state)
+    cohesion_mock.assert_called_once_with(neighborhoods[DriveName.COHESION], internal_state)

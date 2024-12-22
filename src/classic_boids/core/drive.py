@@ -80,13 +80,13 @@ def cohesion_drive(neighborhood: NeighborhoodProtocol, internal_state: InternalS
 
 def compute_drives(
     drive_functions: dict[DriveName, DriveFunctionProtocol],
-    neighborhood: NeighborhoodProtocol,
+    neighborhood: dict[DriveName, NeighborhoodProtocol],
     internal_state: InternalStateProtocol,
 ) -> dict[DriveName, VectorType]:
     """Compute the actions by calling each drive function and return them in a dictionary."""
-    a_s = drive_functions[DriveName.SEPARATION](neighborhood, internal_state)
-    a_a = drive_functions[DriveName.ALIGNMENT](neighborhood, internal_state)
-    a_c = drive_functions[DriveName.COHESION](neighborhood, internal_state)
+    a_s = drive_functions[DriveName.SEPARATION](neighborhood[DriveName.SEPARATION], internal_state)
+    a_a = drive_functions[DriveName.ALIGNMENT](neighborhood[DriveName.COHESION], internal_state)
+    a_c = drive_functions[DriveName.COHESION](neighborhood[DriveName.COHESION], internal_state)
     return {
         DriveName.SEPARATION: a_s,
         DriveName.ALIGNMENT: a_a,

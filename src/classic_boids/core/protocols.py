@@ -103,7 +103,7 @@ class ComputeDrivesProtocol(Protocol):
     def __call__(
         self,
         drive_functions: dict[DriveName, DriveFunctionProtocol],
-        neighborhood: NeighborhoodProtocol,
+        neighborhood: dict[DriveName, NeighborhoodProtocol],
         internal_state: InternalStateProtocol,
     ) -> dict[DriveName, VectorType]:
         ...
