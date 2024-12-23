@@ -74,12 +74,29 @@ class NeighborhoodProtocol(Protocol):
     info: dict[BoidID, tuple[VectorType, VectorType]]
 
 
+# Enum to identify each drive action
+class DriveName(Enum):
+    SEPARATION = "separation"
+    ALIGNMENT = "alignment"
+    COHESION = "cohesion"
+
+
 class PerceptionFunctionProtocol(Protocol):
     def __call__(
         self,
         input_alphabet: InputAlphabetProtocol,
         internal_state: InternalStateProtocol,
     ) -> NeighborhoodProtocol:
+        ...
+
+
+class ComputePerceptionsProtocol(Protocol):
+    def __call__(
+        self,
+        perception_functions: dict[DriveName, PerceptionFunctionProtocol],
+        input_alphabet: InputAlphabetProtocol,
+        internal_state: InternalStateProtocol,
+    ) -> dict[DriveName, NeighborhoodProtocol]:
         ...
 
 
@@ -90,13 +107,6 @@ class DriveFunctionProtocol(Protocol):
         internal_state: InternalStateProtocol,
     ) -> VectorType:
         ...
-
-
-# Enum to identify each drive action
-class DriveName(Enum):
-    SEPARATION = "separation"
-    ALIGNMENT = "alignment"
-    COHESION = "cohesion"
 
 
 class ComputeDrivesProtocol(Protocol):

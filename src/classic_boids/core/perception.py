@@ -6,6 +6,7 @@ from .protocols import (
     InputAlphabetProtocol,
     BoidID,
     NeighborhoodProtocol,
+    PerceptionFunctionProtocol,
     VectorType,
 )
 from .vector import distance, angular_offset
@@ -62,9 +63,31 @@ def perception(
     return Neighborhood(ids=neighborhood_ids, info=neighborhood_info)
 
 
-# TODO eventually this should return a touple of evaluated perception functions (ie neighborhoods)
-# def process_perception(
-#     perception_function: PerceptionFunctionProtocol,
-#     input_alphabet: InputAlphabetProtocol,
-# ) -> None:
-#     perception_function(input_alphabet=input_alphabet)
+def compute_perceptions(
+    perception_functions: dict[DriveName, PerceptionFunctionProtocol],
+    input_alphabet: InputAlphabetProtocol,
+    internal_state: InternalStateProtocol,
+) -> dict[DriveName, NeighborhoodProtocol]:
+    """
+    Compute the perception of each drive (SEPARATION, ALIGNMENT, COHESION) by
+    calling the corresponding function and return them in a dictionary.
+
+    :param perception_functions:
+        A mapping of DriveName to a callable that takes (input_alphabet, internal_state, drive_name)
+        and returns a NeighborhoodProtocol describing visible neighbors for that drive.
+    :param input_alphabet:
+        The global input data (positions, velocities, etc.) to check against.
+    :param internal_state:
+        The internal state of the boid (or entity) for which we are computing perceptions.
+    :return:
+        A dictionary mapping each DriveName to the resulting NeighborhoodProtocol,
+        containing the neighbor IDs and their information.
+    """
+    p_s = perception_functions[DriveName.SEPARATION](input_alphabet, internal_state, DriveName.SEPARATION)
+    p_a = perception_functions[DriveName.ALIGNMENT](input_alphabet, internal_state, DriveName.ALIGNMENT)
+    p_c = perception_functions[DriveName.COHESION](input_alphabet, internal_state, DriveName.COHESION)
+    return {
+        DriveName.SEPARATION: p_s,
+        DriveName.ALIGNMENT: p_a,
+        DriveName.COHESION: p_c,
+    }
