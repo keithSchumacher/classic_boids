@@ -68,6 +68,9 @@ class InternalStateProtocol(Protocol, Generic[VectorType, PerceptionAttributeTyp
     max_achievable_force: float
     action_weights: PerceptionAttributeType
 
+    def get_output_alphabet(self) -> tuple[BoidID, VectorType, VectorType]:
+        ...
+
 
 class NeighborhoodProtocol(Protocol):
     ids: list[BoidID]

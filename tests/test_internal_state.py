@@ -65,6 +65,13 @@ class TestInternalState:
         self.internal_state.position += self.internal_state.position
         assert self.internal_state.position == self.position * 2
 
+    def test_get_output_alphabet(self):
+        assert self.internal_state.get_output_alphabet() == (
+            self.internal_state.id,
+            self.internal_state.position,
+            self.internal_state.velocity,
+        )
+
     def test_internal_state_conforms_to_protocol(self):
         def process_internal_state(state: InternalStateProtocol[Vector, dict[DriveName, float]]):
             assert isinstance(state, InternalStateProtocol)

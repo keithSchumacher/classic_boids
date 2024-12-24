@@ -16,3 +16,12 @@ class InternalState(Generic[VectorType], InternalStateProtocol[VectorType, dict[
     max_achievable_velocity: float
     max_achievable_force: float
     action_weights: dict[DriveName, VectorType]
+
+    def get_output_alphabet(self) -> tuple[BoidID, VectorType, VectorType]:
+        """
+        Retrieve essential boid output information:
+        (boid ID, position, velocity).
+
+        :return: A tuple of (BoidID, position, velocity).
+        """
+        return (self.id, self.position, self.velocity)
