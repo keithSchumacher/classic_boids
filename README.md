@@ -67,3 +67,42 @@ $$ S_{ws}(a, q) = \langle p', v', r, fov, m, v_m, f_m, w \rangle $$
 $$ v' = \left\lfloor v + \frac{\lfloor w_{s} a_{s} + w_{a} a_{a} + w_{c} a_{c} \rceil^{f_{\max}}}{m} \right\rceil^{v_{\max}} $$
 
 $$ p' = p + v' $$
+
+
+
+## Installation & Setup
+
+
+Follow these steps to install and run the **Classic Boids** simulation on a new machine.
+
+## **1. Clone the Repository**
+First, clone the project from GitHub:
+```sh
+git clone git@github.com:keithSchumacher/classic_boids.git
+cd classic_boids
+```
+
+## **2. Create and Activate a Virtual Environment**
+Create a Python virtual environment to isolate dependencies:
+```sh
+python -m venv .venv
+source .venv/bin/activate
+```
+
+## **3. Install Dependencies**
+Install the necessary Python packages:
+```sh
+pip install -r requirements.txt
+```
+
+## **4. Install the Project in Editable Mode**
+To allow local imports during development, install the package in editable mode:
+```sh
+pip install -e .
+```
+
+## **5. Run Tests**
+Run tests using `pytest`:
+```sh
+python -m pytest tests/
+```
