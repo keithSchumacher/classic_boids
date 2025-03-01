@@ -1,2 +1,5 @@
 numpy
+# Dev-only packages
 pytest
+pandas
+matplotlib

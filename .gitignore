@@ -9,6 +9,14 @@ venv/
 .venv/
 .python-version
 
+# Jupyter Notebook related files
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Distribution / packaging
 build/
 dist/
@@ -35,3 +43,11 @@ dist/
 
 # Emacs directory settings
 .dir-locals.el
+
+# Output and temporary files
+*.csv
+*.tsv
+*.log
+*.out
+*.err
+*.mp4

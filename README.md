@@ -1,5 +1,3 @@
-For development, navigate to root directory, activate virtual environment and run: pip install -e .  Useful info for pytest: https://github.com/wbolster/emacs-python-pytest?tab=readme-ov-file coverage run -m pytest tests/ coverage report
-
 ## Boid Formalism
 
 This project implements the Boid formalism from [*The computational beauty of flocking: Boids revisited* (Bajec, Zimic, and Mraz, 2007)](https://www.researchgate.net/publication/243041154_The_computational_beauty_of_flocking_Boids_revisited). Below is a brief overview of the formalism.
