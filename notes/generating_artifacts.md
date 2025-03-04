@@ -1,13 +1,65 @@
 # Generating Artifacts in Classic Boids
 
-This document provides instructions on the various ways to generate artifacts (visualizations, data files, etc.) in the Classic Boids project.
+This document provides instructions on how to generate various artifacts in the Classic Boids project.
 
 ## Table of Contents
+1. [Using the SimulationRunner](#using-the-simulationrunner)
+2. [2D Boid Animations](#2d-boid-animations)
+3. [3D Boid Animations](#3d-boid-animations)
+4. [Generating Sample Data](#generating-sample-data)
+5. [Custom Artifact Generation](#custom-artifact-generation)
 
-1. [2D Boid Animations](#2d-boid-animations)
-2. [3D Boid Animations](#3d-boid-animations)
-3. [Generating Sample Data](#generating-sample-data)
-4. [Custom Artifact Generation](#custom-artifact-generation)
+## Using the SimulationRunner
+
+The `SimulationRunner` class provides a structured way to run boid simulations and save the results. It supports both 2D and 3D simulations.
+
+### Running a 2D Simulation
+
+```python
+from classic_boids.core.simulation_runner import run_2d_simulation
+
+# Run a 2D simulation with default parameters (20 boids, 200 steps)
+csv_path = run_2d_simulation()
+
+# Run with custom parameters
+csv_path = run_2d_simulation(
+    num_boids=30,
+    num_steps=300,
+    output_csv_path="artifacts/my_custom_2d_simulation.csv"
+)
+```
+
+### Running a 3D Simulation
+
+```python
+from classic_boids.core.simulation_runner import run_3d_simulation
+
+# Run a 3D simulation with default parameters (20 boids, 200 steps)
+csv_path = run_3d_simulation()
+
+# Run with custom parameters
+csv_path = run_3d_simulation(
+    num_boids=30,
+    num_steps=300,
+    output_csv_path="artifacts/my_custom_3d_simulation.csv"
+)
+```
+
+### Using the SimulationRunner Directly
+
+For more control, you can use the `SimulationRunner` class directly:
+
+```python
+from classic_boids.core.simulation_runner import SimulationRunner
+from classic_boids.utils.create_sample_boids import create_sample_boids
+
+# Create custom boids
+boids = create_sample_boids(num_boids=15)
+
+# Create and run the simulation
+runner = SimulationRunner(boids=boids, num_steps=250, is_3d=False)
+csv_path = runner.run(output_csv_path="artifacts/custom_simulation.csv")
+```
 
 ## 2D Boid Animations
 
