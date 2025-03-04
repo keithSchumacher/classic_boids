@@ -65,7 +65,7 @@ def full_fov_boid_3d():
 def normal_fov_boid_3d():
     return InternalState(
         id=BoidID(2),
-        position=Vector(np.array([4, 4, 4])),
+        position=Vector(np.array([3, 3, 3])),
         velocity=Vector(np.array([-1, 0, 0])),
         perception_distance={
             DriveName.COHESION: 0.0,
@@ -92,7 +92,7 @@ def normal_fov_boid_3d():
 def another_boid_3d():
     return InternalState(
         id=BoidID(3),
-        position=Vector(np.array([10, 10, 10])),
+        position=Vector(np.array([8, 8, 8])),
         velocity=Vector(np.array([0, -1, 0])),
         perception_distance={
             DriveName.COHESION: 0.0,
