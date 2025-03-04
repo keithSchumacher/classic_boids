@@ -2,8 +2,13 @@
 
 A faithful implementation of the boid flocking algorithm as described in [*The computational beauty of flocking: Boids revisited* (Bajec, Zimic, and Mraz, 2007)](https://www.researchgate.net/publication/243041154_The_computational_beauty_of_flocking_Boids_revisited).
 
+## 3D Boid Simulation Video
+
+▶️ **Click below to watch the 3D simulation in action:**
+
 [![Boids Animation](https://img.youtube.com/vi/RdKcSScaeV4/0.jpg)](https://www.youtube.com/watch?v=RdKcSScaeV4)
-<!-- Click the image above to watch the 3D boid simulation on YouTube -->
+
+<div align="center"><i>👆 Click the image to watch the full video on YouTube 👆</i></div>
 
 ## Overview
 
